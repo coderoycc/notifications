@@ -1,4 +1,3 @@
-
 export enum TargetStatus {
   ACTIVE = 'ACTIVE',
   BLOCKED = 'BLOCKED',
