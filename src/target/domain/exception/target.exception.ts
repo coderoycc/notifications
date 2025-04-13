@@ -1,3 +1,10 @@
+export class TargetNotDefinedException extends Error {
+  constructor() {
+    super('Target must be defined and not null');
+    this.name = 'TargetNotDefinedException';
+  }
+}
+
 export class TargetNotFoundException extends Error {
   constructor(targetId?: number) {
     super(`Target ${targetId || ''} not found`);
