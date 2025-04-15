@@ -1,11 +1,10 @@
-import { TargetStatus } from "../interfaces/target-status.interface";
-
+import { TargetStatus } from '../enums/target-status.enum';
 export class Target {
   targetId: string;
   channelInfo: string; // xx@mail.cc o 5534534
   enableState: TargetStatus;
 
-  consturctor(
+  constructor(
     id: string,
     channelInfo: string,
     targetStatus: TargetStatus
