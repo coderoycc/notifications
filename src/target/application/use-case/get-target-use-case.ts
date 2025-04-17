@@ -7,9 +7,8 @@ export class GetTargetById {
   ) { }
   async execute(id: string) {
     const target = await this.targetRepository.findById(id);
-    if (!target) {
+    if (!target)
       throw new Error("Target not found");
-    }
     return target;
   }
 }
