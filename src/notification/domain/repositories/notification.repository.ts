@@ -5,3 +5,4 @@ export interface NotificationRepository {
   getTargetById(targetId: string): Promise<Target | null>;
   getTemplateById(templateId: string): Promise<any>;
 }
+export const NOTIREPONAME = 'NotificationRepository';
