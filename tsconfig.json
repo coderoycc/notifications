@@ -24,6 +24,9 @@
       "@noti/*": [
         "./src/notification/*"
       ],
+      "@template/*": [
+        "./src/template/*"
+      ],
     }
   }
 }
