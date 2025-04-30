@@ -2,7 +2,9 @@ import { Module } from '@nestjs/common';
 @Module({
   imports: [],
   controllers: [],
-  providers: [],
+  providers: [
+    
+  ],
   exports: [],
 })
 export class NotificationModule { }

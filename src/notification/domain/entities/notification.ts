@@ -11,8 +11,8 @@ export abstract class Notification {
   scheduled: boolean;
   type: string;
   status: NotificationStatus;
-  createdAt: Date;
-  template: Template | null;
+  createdAt?: Date;
+  template?: Template;
 }
 
 export interface NotificationSender {
