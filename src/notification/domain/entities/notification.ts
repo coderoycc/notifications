@@ -1,22 +1,4 @@
-import { Target } from "@target/domain/entities/target";
-import { Template } from "@template/domain/entities/template";
-import { NotificationStatus } from "./status.enum";
-
-export abstract class Notification {
+export class Notification {
   id?: string;
-  target: Target;
-  title: string;
-  message: string;
-  dateToSend: Date;
-  scheduled: boolean;
-  type: string;
-  status: NotificationStatus;
-  createdAt?: Date;
-  template?: Template;
-}
 
-export interface NotificationSender {
-  beforeSend(notification: Notification): Promise<void>;
-  send(notification: Notification): Promise<NotificationStatus>;
-  afterSend(notification: Notification): Promise<void>;
 }
