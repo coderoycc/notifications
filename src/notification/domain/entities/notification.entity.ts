@@ -9,7 +9,7 @@ export class Notification {
   scheduledAt?: Date;
   status?: NotificationStatus;
   type?: NotificationType;
-  target?: Target;
+  target: string;
   createdBy?: string;
 
   constructor(
