@@ -1,4 +1,4 @@
-import { NotificationStatus, NotificationType } from "../types";
+import { NotificationStatus, NotificationType } from "./schemas";
 
 export class Notification {
   id?: string;

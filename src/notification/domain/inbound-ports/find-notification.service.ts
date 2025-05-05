@@ -1,4 +1,4 @@
-import { NotificationStatus, NotificationType } from "../types";
+import { NotificationStatus, NotificationType } from "../../domain/entities/schemas";
 
 export interface FindNotificationService {
   findById(id: string): Promise<Notification | null>;
