@@ -1,11 +1,11 @@
 import { Controller, Post, Body, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateNotificationDto } from '../dtos/create-notification.dto';
 
-@Controller('notifications')
+@Controller('notification')
 export class NotificationCreateController {
   constructor(private readonly notificationCreateService: NotificationCreateService) {}
 
-  @Post()
+  @Post('create')
   async createNotification(@Body() createNotificationDto: CreateNotificationDto) {
     try {
       const notification = await this.notificationCreateService.create(createNotificationDto);
