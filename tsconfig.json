@@ -18,14 +18,14 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@target/*": [
-        "./src/target/*"
+      "@noti-domain/*": [
+        "./src/notification/domain/*"
       ],
-      "@noti/*": [
-        "./src/notification/*"
+      "@noti-infra/*": [
+        "./src/notification/infra/*"
       ],
-      "@template/*": [
-        "./src/template/*"
+      "@noti-app/*": [
+        "./src/notification/app/*"
       ],
     }
   }
