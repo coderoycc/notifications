@@ -1,5 +1,5 @@
 import { Global, Module } from "@nestjs/common";
-import { ConfigModule } from "@nestjs/config";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { ConfigOptions } from "./config/orm/typeorm.config";
 
@@ -10,6 +10,8 @@ import { ConfigOptions } from "./config/orm/typeorm.config";
       isGlobal: true,
     }),
     TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
       useFactory: ConfigOptions,
     })
   ],
