@@ -1,19 +1,23 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { CreateNotificationUseCaseImpl } from '@noti-app/use-cases/create-notification.use-case';
 import { NotificationEmailCreateController } from '@noti-infra/http/controllers/notification-email.controller';
-import { NotificationTypeOrmRepository, NOTIFICATION_TYPEORM_REPO } from '@noti-infra/orm/notification-typeorm.repository';
+import { NotificationEntity } from '@noti-infra/orm/entities/notification.entity';
+import { NotificationTypeOrmRepository, NOTIFICATION_REPOSITORY } from '@noti-infra/orm/repository/notification-typeorm.repository';
 
 @Module({
-  imports: [],
-  controllers: [
-    NotificationEmailCreateController
+  imports: [
+    TypeOrmModule.forFeature([NotificationEntity]),
   ],
   providers: [
-    CreateNotificationUseCaseImpl,
     {
-      provide: NOTIFICATION_TYPEORM_REPO,
+      provide: NOTIFICATION_REPOSITORY,
       useClass: NotificationTypeOrmRepository,
-    }
+    },
+    CreateNotificationUseCaseImpl,
+  ],
+  controllers: [
+    NotificationEmailCreateController
   ],
   exports: [],
 })

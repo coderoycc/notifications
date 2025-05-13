@@ -1,11 +1,11 @@
 import { Controller, Post, Body, HttpException, HttpStatus } from '@nestjs/common';
 import { CreateNotificationDto } from '../dtos/create-notification.dto';
-import { CreateNotificationUseCase } from '@noti-domain/inbound-ports/create-notification.use-case';
 import { NotificationEmailMapper } from '../mappers/notification-email.mapper';
+import { CreateNotificationUseCaseImpl } from '@noti-app/use-cases/create-notification.use-case';
 
 @Controller('notification')
 export class NotificationEmailCreateController {
-  constructor(private readonly notificationCreateService: CreateNotificationUseCase) {}
+  constructor(private readonly notificationCreateService: CreateNotificationUseCaseImpl) {}
 
   @Post('send-email')
   async createNotification(@Body() createNotificationDto: CreateNotificationDto) {
