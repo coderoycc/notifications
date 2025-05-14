@@ -13,7 +13,7 @@ export class NotificationEntity {
   @Column({ type: 'varchar', length: 255 })
   message: string;
 
-  @CreateDateColumn({ type: 'datetime' })
+  @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
 
   @Column({ type: 'boolean', default: false })
@@ -22,14 +22,14 @@ export class NotificationEntity {
   @Column({ type: 'timestamp', nullable: true })
   scheduledAt: Date;
 
-  @Column({ type: 'enum', default: 'pendiente' })
+  @Column({ type: 'enum', enum: NotificationStatus, default: NotificationStatus.PENDING })
   status: NotificationStatus;
 
-  @Column({ type: 'enum', nullable: true })
+  @Column({ type: 'enum', enum: NotificationType, nullable: true })
   type: NotificationType;
 
+  @Index('idx_notification_target', { fulltext: true })
   @Column({ type: 'varchar', length: 255 })
-  @Index('idx_notification_target')
   target: string;
 
   @Column({ type: 'varchar', length: 64 })

@@ -1,2 +1,11 @@
-export type NotificationStatus = 'pending' | 'scheduled' | 'sent' | 'failed';
-export type NotificationType = 'email' | 'sms';
+export enum NotificationStatus {
+  PENDING = 'pending', 
+  SCHEDULED = 'scheduled', 
+  SENT = 'sent',
+  FAILED = 'failed',
+}
+export enum NotificationType {
+  EMAIL = 'email',
+  SMS = 'sms',
+  PUSH = 'push',
+} 

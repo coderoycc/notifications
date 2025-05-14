@@ -13,6 +13,6 @@ export class CreateNotificationUseCaseImpl implements CreateNotificationUseCase 
 
   async execute(request: CreateNotificationRequest): Promise<NotificationStatus> {
     const notification = await this.notificationRepository.create(request);
-    return notification.status ?? 'failed';
+    return notification.status ?? NotificationStatus.PENDING; 
   }
 }
