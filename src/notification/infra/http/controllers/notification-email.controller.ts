@@ -12,8 +12,7 @@ export class NotificationEmailCreateController {
     try {
       const dataToCreate = NotificationEmailMapper.toCreateRequest(createNotificationDto);
       console.log('dataToCreate', dataToCreate, 'createNotificationDto', createNotificationDto);
-      // const notification = await this.notificationCreateService.execute(dataToCreate);
-      // return { success: true, data: notification };
+      const notification = await this.notificationCreateService.execute(dataToCreate);
       return { success: true }
     } catch (error) {
       throw new HttpException(
