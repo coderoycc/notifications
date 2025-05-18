@@ -3,7 +3,7 @@ import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { NotificationEntity } from "../entities/notification.entity";
 
-export const NOTIFICATION_REPOSITORY = Symbol('NotificationRepository');
+export const NOTIFICATION_REPOSITORY = Symbol('NotificationRepositoryTypeOrm');
 
 export class NotificationTypeOrmRepository implements NotificationRepository {
   constructor(
