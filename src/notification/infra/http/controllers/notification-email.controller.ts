@@ -31,10 +31,10 @@ export class NotificationEmailCreateController {
   @Post('schedule-email')
   async scheduleNotification(@Body() createNotificationDto: Required<CreateNotificationDto>) {
     try {
+      console.log(createNotificationDto.scheduledAt);
       if (
-        !moment(createNotificationDto.scheduledAt, 'YYYY-MM-DD HH:mm:ss', true).isValid()
-        || moment(createNotificationDto.scheduledAt).isBefore(moment()
-      )
+        !moment(createNotificationDto.scheduledAt, 'YYYY-MM-DD HH:mm:ss').isValid()
+        || moment(createNotificationDto.scheduledAt).isBefore(moment.now())
       ) {
         throw new Error('Scheduled date is not valid');
       }
