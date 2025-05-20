@@ -18,5 +18,6 @@ export class CreateNotificationDto {
   target: string;
 
   @IsString()
+  @IsNotEmpty()
   createdBy: string;
 }
