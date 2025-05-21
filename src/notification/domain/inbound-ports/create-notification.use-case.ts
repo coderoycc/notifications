@@ -1,6 +1,6 @@
+import { Notification } from "@noti-domain/entities/notification.entity";
 import { NewNotificationRequest } from "../entities/schemas/create.schema";
-import { NotificationStatus } from "../entities/schemas";
 
 export interface CreateNotificationUseCase {
-  execute(data: NewNotificationRequest): Promise<NotificationStatus>;
+  execute(data: NewNotificationRequest): Promise<Notification>;
 }

@@ -2,6 +2,8 @@ import { NotificationRepository } from "@noti-domain/outbound-ports/notification
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { NotificationEntity } from "../entities/notification.entity";
+import { Notification } from "@noti-domain/entities/notification.entity";
+import { NotificationMapper } from "../mappers/notification-orm.mapper";
 
 export const NOTIFICATION_REPOSITORY = Symbol('NotificationRepositoryTypeOrm');
 
@@ -11,32 +13,33 @@ export class NotificationTypeOrmRepository implements NotificationRepository {
     private readonly notificationRepository: Repository<NotificationEntity>
   ) {}
 
-  async create(notification: Partial<NotificationEntity>): Promise<NotificationEntity> {
+  async create(notification: Partial<Notification>): Promise<Notification> {
     const newNotification = this.notificationRepository.create(notification);
-    return await this.notificationRepository.save(newNotification);
+    const notificationSaved = await this.notificationRepository.save(newNotification);
+    return NotificationMapper.toDomain(notificationSaved);
   }
 
-  async update(notification: Partial<NotificationEntity>): Promise<NotificationEntity> {
+  async update(notification: Partial<NotificationEntity>): Promise<Notification> {
     if (!notification.id) 
       throw new Error("Notification ID is required for update.");
     
     await this.notificationRepository.update(notification.id, notification);
-    return this.findById(notification.id) as Promise<NotificationEntity>;
+    return this.findById(notification.id) as Promise<Notification>;
   }
 
   async delete(id: string): Promise<void> {
     await this.notificationRepository.delete(id);
   }
 
-  async findById(id: string): Promise<NotificationEntity | null> {
-    return await this.notificationRepository.findOne({ where: { id } }) || null;
+  async findById(id: string): Promise<Notification | null> {
+    return null;
   }
 
-  async findAllByTarget(target: string): Promise<NotificationEntity[]> {
-    return await this.notificationRepository.find({ where: { target } });
+  async findAllByTarget(target: string): Promise<Notification[]> {
+    return []; 
   }
 
-  async findByUserId(userId: string): Promise<NotificationEntity[]> {
-    return await this.notificationRepository.find({ where: { id: userId } });
+  async findByUserId(userId: string): Promise<Notification[]> {
+    return [];
   }
 }
