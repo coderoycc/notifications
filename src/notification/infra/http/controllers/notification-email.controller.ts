@@ -4,20 +4,14 @@ import { NotificationEmailMapper } from '../mappers/notification-email.mapper';
 import { CreateNotificationUseCaseImpl } from '@noti-app/use-cases/create-notification.use-case';
 import moment from 'moment';
 
-@Controller('notification')
+@Controller('notifications')
 export class NotificationEmailCreateController {
   constructor(private readonly notificationCreateService: CreateNotificationUseCaseImpl) {}
-
-  @Get()
-  async getData(@Query() query: any) {
-    return { message: 'Hello from NotificationEmailCreateController!', query };
-  }
 
   @Post('send-email')
   async createNotification(@Body() createNotificationDto: CreateNotificationDto) {
     try {
       const dataToCreate = NotificationEmailMapper.toCreateRequest(createNotificationDto);
-      console.log('dataToCreate', dataToCreate, 'createNotificationDto', createNotificationDto);
       const notificationStatus = await this.notificationCreateService.execute(dataToCreate);
       return { success: true, status: notificationStatus }
     } catch (error) {
