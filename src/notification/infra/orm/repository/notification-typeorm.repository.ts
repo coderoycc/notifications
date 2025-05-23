@@ -36,10 +36,12 @@ export class NotificationTypeOrmRepository implements NotificationRepository {
   }
 
   async findAllByTarget(target: string): Promise<Notification[]> {
-    return []; 
+    const notifications = await this.notificationRepository.find({ where: { target } });
+    return notifications.map(notification => NotificationMapper.toDomain(notification));
   }
 
   async findByUserId(userId: string): Promise<Notification[]> {
-    return [];
+    const notifications = await this.notificationRepository.find({ where: { createdBy: userId } });
+    return notifications.map(NotificationMapper.toDomain);
   }
 }
