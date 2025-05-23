@@ -1,26 +1,32 @@
-import { Controller, Get, Post, Body, Param, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Query, HttpException } from '@nestjs/common';
+import { NotificationGetService } from '@noti-app/services/notification-get.service';
 
 @Controller('notifications')
 export class NotificationController {
 
   constructor(
-    private readonly getterNotificationService: any 
+    private readonly getService: NotificationGetService 
   ) {}
   
   @Get('by-target')
   getAllByTarget(@Query('target') target: string) {
-    return [];
+    if(!target) {
+      throw new HttpException(
+        { success: false, message: 'Target is required' },
+        400,
+      )
+    }
+    return this.getService.findAllByTarget(target);
   }
 
   @Get('by-sender')
-  findOne(@Param('sender') id: string) {
-    // Lógica para obtener una notificación por ID
-    return { id };
-  }
-
-  @Post()
-  create(@Body() createNotificationDto: any) {
-    // Lógica para crear una nueva notificación
-    return createNotificationDto;
+  findOne(@Query('sender') id: string) {
+    if (!id){
+      throw new HttpException(
+        { success: false, message: 'Sender is required' },
+        400,
+      );
+    }
+    return this.getService.findAllByUserId(id);  
   }
 }
