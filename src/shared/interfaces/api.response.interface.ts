@@ -13,13 +13,7 @@ export interface PaginatedResponse<T = any> {
 export interface ErrorDetail {
   code: string;
   message: string;
-  details?: ValidationError[];
-}
-
-export interface ValidationError {
-  field: string;
-  message: string;
-  value?: any;
+  details?: string[];
 }
 
 export interface MetaInfo {

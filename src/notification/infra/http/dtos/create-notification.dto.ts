@@ -1,7 +1,7 @@
-import { IsString, IsOptional, IsDate, IsNotEmpty } from 'class-validator';
+import { IsString, IsOptional, IsDate, IsNotEmpty, IsDateString } from 'class-validator';
 
 export class CreateNotificationDto {
-  @IsString({ message: 'Notification ID must be a string' })
+  @IsString({ message: 'Notification must be string' })
   @IsNotEmpty({ message: 'Title is required' })
   title: string;
 
@@ -10,12 +10,8 @@ export class CreateNotificationDto {
   message: string;
 
   @IsOptional()
-  @IsDate()
+  @IsDateString()
   scheduledAt?: Date;
-
-  @IsString()
-  @IsNotEmpty()
-  target: string;
 
   @IsString()
   @IsNotEmpty()

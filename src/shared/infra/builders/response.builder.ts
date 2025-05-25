@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { ApiResponse, PaginatedResponse } from '../interfaces/api.response.interface';
+import { ApiResponse, PaginatedResponse } from '../../interfaces/api.response.interface';
 import { ValidationError } from '@nestjs/common';
 
 export class ResponseBuilder {
@@ -9,7 +9,7 @@ export class ResponseBuilder {
    * @returns {string} The generated request ID.
    */
   private static generateRequestId(): string {
-    return `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    return `req_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
   }
 
   /**
@@ -141,27 +141,22 @@ export class ResponseBuilder {
    * Builds a standard API error response.
    * @param {string} code - The error code.
    * @param {string} message - The error message.
-   * @param {ValidationError[]} [details] - Optional validation error details.
+   * @param {string[]} [details] - Optional validation error details.
    * @param {Request} [request] - The Express request object.
    * @returns {ApiResponse<null>} The formatted API error response.
    */
   static error(
     code: string,
     message: string,
-    details?: ValidationError[],
+    details?: string[],
     request?: Request,
   ): ApiResponse<null> {
-    const mappedDetails = details?.map((error) => ({
-      field: error.property,
-      message: Object.values(error.constraints || {}).join(', ') || 'Invalid value',
-    }));
-
     return {
       data: null,
       error: {
         code,
         message,
-        details: mappedDetails,
+        details, 
       },
       meta: {
         timestamp: new Date().toISOString(),
@@ -179,7 +174,7 @@ export class ResponseBuilder {
    * @returns {ApiResponse<null>} The formatted API error response.
    */
   static validationError(
-    errors: ValidationError[],
+    errors: string[],
     request?: Request,
   ): ApiResponse<null> {
     return this.error(

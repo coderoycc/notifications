@@ -1,7 +1,13 @@
-import { Controller, Get, Post, Body, Param, Query, HttpException } from '@nestjs/common';
+import { Controller, Get, Query, HttpException, UseInterceptors, UseFilters } from '@nestjs/common';
 import { NotificationGetService } from '@noti-app/services/notification-get.service';
+import { Notification } from '@noti-domain/entities/notification.entity';
+import { ApiStandardResponse } from 'src/shared/infra/decorators/api-response.decorator';
+import { HttpExceptionFilter } from 'src/shared/infra/filters/http-exception.filter';
+import { ResponseInterceptor } from 'src/shared/infra/interceptors/response.interceptors';
 
 @Controller('notifications')
+@UseInterceptors(ResponseInterceptor)
+@UseFilters(HttpExceptionFilter)
 export class NotificationController {
 
   constructor(
@@ -9,7 +15,8 @@ export class NotificationController {
   ) {}
   
   @Get('by-target')
-  getAllByTarget(@Query('target') target: string) {
+  // @ApiStandardResponse(Object, 200, 'Lista de notificationes por target', true)
+  getAllByTarget(@Query('target') target: string): Promise<Notification[]> {
     if(!target) {
       throw new HttpException(
         { success: false, message: 'Target is required' },
@@ -20,10 +27,11 @@ export class NotificationController {
   }
 
   @Get('by-sender')
+  @ApiStandardResponse(Notification, 200, 'Lista de notificationes por target', true)
   findOne(@Query('sender') id: string) {
     if (!id){
       throw new HttpException(
-        { success: false, message: 'Sender is required' },
+        { success: false, message: 'Sender is required', field: 'sender' },
         400,
       );
     }
