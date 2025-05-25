@@ -1,8 +1,8 @@
 import { NewNotificationRequest, NotificationType } from '@noti-domain/entities/schemas';
-import { CreateNotificationDto } from '../dtos/create-notification.dto';
+import { CreateNotificationEmailDto } from '../dtos/create-email-notification.dto';
 
 export class NotificationEmailMapper {
-  static toCreateRequest(dto: CreateNotificationDto): NewNotificationRequest {
+  static toCreateRequest(dto: CreateNotificationEmailDto): NewNotificationRequest {
     return {
       title: dto.title,
       message: dto.message,
@@ -12,7 +12,7 @@ export class NotificationEmailMapper {
       target: dto.target,
     };
   }
-  static toCreateRequestWithSchedule(dto: Required<CreateNotificationDto>): NewNotificationRequest {
+  static toCreateRequestWithSchedule(dto: Required<CreateNotificationEmailDto>): NewNotificationRequest {
     return {
       title: dto.title,
       message: dto.message,
