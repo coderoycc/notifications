@@ -1,5 +1,6 @@
 import { applyDecorators, Type } from '@nestjs/common';
-import { ApiResponse as SwaggerApiResponse } from '@nestjs/swagger';
+import { ApiExtraModels, getSchemaPath, ApiResponse as SwaggerApiResponse } from '@nestjs/swagger';
+import { get } from 'http';
 
 export const ApiStandardResponse = <TModel extends Type<any>>(
   model: TModel,
@@ -10,10 +11,11 @@ export const ApiStandardResponse = <TModel extends Type<any>>(
   const dataSchema = isArray 
     ? {
         type: 'array',
-        items: { $ref: `#/components/schemas/${model.name}` }
+        items: { $ref: getSchemaPath(model)}
       }
-    : { $ref: `#/components/schemas/${model.name}` };
+    : { $ref: getSchemaPath(model) };
   return applyDecorators(
+    ApiExtraModels(model),
     SwaggerApiResponse({
       status,
       description: description || 'Operación exitosa',
