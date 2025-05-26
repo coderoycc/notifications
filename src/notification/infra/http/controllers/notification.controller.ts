@@ -4,6 +4,8 @@ import { Notification } from '@noti-domain/entities/notification.entity';
 import { ApiStandardResponse } from 'src/shared/infra/decorators/api-response.decorator';
 import { HttpExceptionFilter } from 'src/shared/infra/filters/http-exception.filter';
 import { ResponseInterceptor } from 'src/shared/infra/interceptors/response.interceptors';
+import { NotificationDto } from '../dtos/notification.dto';
+import { NotificationMapper } from '../mappers/notification.mapper';
 
 @Controller('notifications')
 @UseInterceptors(ResponseInterceptor)
@@ -15,26 +17,37 @@ export class NotificationController {
   ) {}
   
   @Get('by-target')
-  // @ApiStandardResponse(Object, 200, 'Lista de notificationes por target', true)
-  getAllByTarget(@Query('target') target: string): Promise<Notification[]> {
+  @ApiStandardResponse(NotificationDto, 200, 'Lista de notificationes por target', true)
+  async getAllByTarget(@Query('target') target: string): Promise<NotificationDto[]> {
     if(!target) {
       throw new HttpException(
         { success: false, message: 'Target is required' },
         400,
       )
     }
-    return this.getService.findAllByTarget(target);
+    const data = await this.getService.findAllByTarget(target);
+    if(data.length === 0)
+      throw new HttpException({
+        message: `Notifications not found for target: ${target}`,
+      }, 404)
+    
+    return data.map(NotificationMapper.toNotificationDto);
   }
 
   @Get('by-sender')
-  @ApiStandardResponse(Notification, 200, 'Lista de notificationes por target', true)
-  findOne(@Query('sender') id: string) {
+  @ApiStandardResponse(NotificationDto, 200, 'Lista de notrficationes por usuariotarget', true)
+  async findOne(@Query('sender') id: string): Promise<NotificationDto[]> {
     if (!id){
       throw new HttpException(
         { success: false, message: 'Sender is required', field: 'sender' },
         400,
       );
     }
-    return this.getService.findAllByUserId(id);  
+    const data = await this.getService.findAllByUserId(id);  
+    if(data.length === 0)
+      throw new HttpException({
+        message: `Notifications not found for sender: ${id}`,
+      }, 404)
+    return data.map(NotificationMapper.toNotificationDto)
   }
 }

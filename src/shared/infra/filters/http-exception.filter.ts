@@ -29,7 +29,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
             errorResponse = ResponseBuilder.validationError(details || [], request);
             break;
           case HttpStatus.NOT_FOUND:
-            errorResponse = ResponseBuilder.notFound('Recurso', request);
+            errorResponse = ResponseBuilder.notFound(request, details);
             break;
           case HttpStatus.CONFLICT:
             errorResponse = ResponseBuilder.conflict(

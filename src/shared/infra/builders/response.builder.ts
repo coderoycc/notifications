@@ -189,13 +189,14 @@ export class ResponseBuilder {
    * Builds a standard API not found error response.
    * @param {string} resource - The resource that was not found.
    * @param {Request} [request] - The Express request object.
+   * @param {string[]} [details] - The Express request object.
    * @returns {ApiResponse<null>} The formatted API error response.
    */
-  static notFound(resource: string, request?: Request): ApiResponse<null> {
+  static notFound(request?: Request, details?: string[]): ApiResponse<null> {
     return this.error(
       'NOT_FOUND',
-      `${resource} no encontrado`,
-      undefined,
+      `Requested resource not found`,
+      details,
       request,
     );
   }
