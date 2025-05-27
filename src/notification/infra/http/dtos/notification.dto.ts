@@ -12,4 +12,10 @@ export class NotificationDto {
 
   @ApiProperty()
   target: string;
+
+  @ApiProperty()
+  scheduledAt?: Date;
+
+  @ApiProperty()
+  scheduled?: boolean;
 }

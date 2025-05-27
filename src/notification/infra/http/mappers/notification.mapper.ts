@@ -10,6 +10,8 @@ export class NotificationMapper {
       title: notification.title,
       message: notification.message,
       target: notification.target,
+      scheduledAt: notification.scheduledAt,
+      scheduled: notification.scheduled ?? false,
     }
   }
 }

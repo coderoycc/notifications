@@ -6,6 +6,11 @@ import moment from 'moment';
 import { ResponseInterceptor } from 'src/shared/infra/interceptors/response.interceptors';
 import { HttpExceptionFilter } from 'src/shared/infra/filters/http-exception.filter';
 import { CreateNotificationEmailDto } from '../dtos/create-email-notification.dto';
+import { ApiStandardResponse } from 'src/shared/infra/decorators/api-response.decorator';
+import { NotificationMapper } from '../mappers/notification.mapper';
+import { NotificationDto } from '../dtos/notification.dto';
+import { ApiBadRequestResponse } from '@nestjs/swagger';
+import { apiErrorHandler } from 'src/shared/infra/handlers/api-error.handler';
 
 @Controller('notifications')
 @UseInterceptors(ResponseInterceptor)
@@ -14,38 +19,37 @@ export class NotificationEmailCreateController {
   constructor(private readonly notificationCreateService: CreateNotificationUseCaseImpl) {}
 
   @Post('send-email')
-  async createNotification(@Body() createNotificationDto: CreateNotificationEmailDto) {
+  @ApiStandardResponse(NotificationDto, 201, 'Save notification email')
+  async createNotification(@Body() createNotificationDto: CreateNotificationEmailDto): Promise<NotificationDto> {
     try {
       const dataToCreate = NotificationEmailMapper.toCreateRequest(createNotificationDto);
-      return this.notificationCreateService.execute(dataToCreate);
+      const notiResp = await this.notificationCreateService.execute(dataToCreate);
+      return NotificationMapper.toNotificationDto(notiResp);
     } catch (error) {
-      throw new HttpException(
-        { success: false, message: error.message },
-        HttpStatus.BAD_REQUEST,
-      );
+      throw apiErrorHandler(error);
     }
   }
 
   @Post('schedule-email')
-  async scheduleNotification(@Body() createNotificationDto: CreateNotificationEmailDto) {
+  @ApiStandardResponse(NotificationDto, 201, 'Schedule notification email')
+  async scheduleNotification(@Body() createNotificationDto: CreateNotificationEmailDto): Promise<NotificationDto> {
     try {
       if (
         !moment(createNotificationDto.scheduledAt, 'YYYY-MM-DD HH:mm:ss', true).isValid()
         || moment(createNotificationDto.scheduledAt).isBefore(moment.now())
       ) {
-        throw new Error('Scheduled date is not valid');
+        throw new HttpException('Scheduled date is not valid', HttpStatus.BAD_REQUEST);
       }
 
       if(!createNotificationDto.scheduledAt) {
-        throw new Error('Scheduled date is required');
+        throw new HttpException('Scheduled date is required', HttpStatus.BAD_REQUEST);
       }
       const dataToCreate = NotificationEmailMapper.toCreateRequestWithSchedule(createNotificationDto as Required<CreateNotificationEmailDto>);
-      return this.notificationCreateService.execute(dataToCreate);
+      const notiResp = await this.notificationCreateService.execute(dataToCreate);
+      
+      return NotificationMapper.toNotificationDto(notiResp);
     } catch (error) {
-      throw new HttpException(
-        { success: false, message: error.message || 'Unknown request error' },
-        HttpStatus.BAD_REQUEST,
-      )
+      throw apiErrorHandler(error);
     } 
   }
 }
