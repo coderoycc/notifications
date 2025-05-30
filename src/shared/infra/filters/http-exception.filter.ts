@@ -7,6 +7,8 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { ResponseBuilder } from '../builders/response.builder';
+import { NotificationError } from '@noti-domain/exceptions/notification.exceptions';
+import { ExceptionCodes } from '@noti-domain/exceptions/exception-codes';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -35,6 +37,20 @@ export class HttpExceptionFilter implements ExceptionFilter {
             errorResponse = ResponseBuilder.conflict(
               typeof exceptionResponse === 'string' ? exceptionResponse : exception.message,
               request,
+            );
+            break;
+          case HttpStatus.FORBIDDEN:
+            errorResponse = ResponseBuilder.forbidden(
+              typeof exceptionResponse === 'string' ? exceptionResponse : exception.message,
+              request,
+              details,
+            );
+            break;
+          case HttpStatus.TOO_MANY_REQUESTS:
+            errorResponse = ResponseBuilder.forbidden(
+              exception.message,
+              request,
+              details,
             );
             break;
           default:

@@ -1,6 +1,5 @@
 import { Request } from 'express';
 import { ApiResponse, PaginatedResponse } from '../../interfaces/api.response.interface';
-import { ValidationError } from '@nestjs/common';
 
 export class ResponseBuilder {
 
@@ -212,6 +211,21 @@ export class ResponseBuilder {
       'CONFLICT',
       message,
       undefined,
+      request,
+    );
+  }
+
+
+  /**
+   * Builds a standard API forbidden error response.
+   * @param {Request} [request] - The Express request object.
+   * @returns {ApiResponse<null>} The formatted API error response.
+   */
+  static forbidden(message: string, request?: Request, details?: string[]): ApiResponse<null> {
+    return this.error(
+      'FORBIDDEN',
+      message,
+      details,
       request,
     );
   }
