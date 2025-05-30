@@ -11,7 +11,6 @@ import { ConfigOptions } from "./config/orm/typeorm.config";
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-      inject: [ConfigService],
       useFactory: ConfigOptions,
     })
   ],
