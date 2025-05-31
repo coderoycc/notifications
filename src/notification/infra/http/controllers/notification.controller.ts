@@ -6,6 +6,7 @@ import { HttpExceptionFilter } from 'src/shared/infra/filters/http-exception.fil
 import { ResponseInterceptor } from 'src/shared/infra/interceptors/response.interceptors';
 import { NotificationDto } from '../dtos/notification.dto';
 import { NotificationMapper } from '../mappers/notification.mapper';
+import { AdvancedFilterDto } from '../dtos/filters.dto';
 
 @Controller('notifications')
 @UseInterceptors(ResponseInterceptor)
@@ -49,5 +50,25 @@ export class NotificationController {
         message: `Notifications not found for sender: ${id}`,
       }, 404)
     return data.map(NotificationMapper.toNotificationDto)
+  }
+
+  @Get('filtered')
+  @ApiStandardResponse(NotificationDto, 200, 'Lista de notificationes filtradas', true)
+  async getFilteredList(@Query() filters: AdvancedFilterDto): Promise<NotificationDto[]> {
+    const {
+      pagination, 
+      ...dataFilter
+    } = filters;
+    const { page = 1, limit = 10 } = pagination || {};
+    const data: Notification[] = await this.getService.listFilters({
+      createdAt: dataFilter.startCreatedDate,
+      target: dataFilter.target,
+      createdBy: dataFilter.sender,
+      status: dataFilter.status,
+      scheduled: dataFilter.scheduled,
+    }, {page, limit});
+
+    return data.map(NotificationMapper.toNotificationDto);
+
   }
 }

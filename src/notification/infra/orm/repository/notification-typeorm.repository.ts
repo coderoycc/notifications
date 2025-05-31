@@ -44,4 +44,33 @@ export class NotificationTypeOrmRepository implements NotificationRepository {
     const notifications = await this.notificationRepository.find({ where: { createdBy: userId } });
     return notifications.map(NotificationMapper.toDomain);
   }
+
+  async listFilters(filter: Partial<Notification>, pagination: { page: number; limit: number }): Promise<Notification[]> {
+    const { target, createdBy, createdAt, status, scheduled } = filter;
+    const { page, limit } = pagination;
+
+    const queryBuilder = this.notificationRepository.createQueryBuilder('notification');
+
+    if (target) {
+      queryBuilder.andWhere('notification.target = :target', { target });
+    }
+    if (createdBy) {
+      queryBuilder.andWhere('notification.createdBy = :sender', { sender: createdBy });
+    }
+    if (createdAt) {
+      queryBuilder.andWhere('notification.createdAt >= :startCreatedDate', { startCreatedDate: createdAt });
+    }
+    if (status) {
+      queryBuilder.andWhere('notification.status = :status', { status });
+    }
+    if (scheduled !== undefined) {
+      queryBuilder.andWhere('notification.scheduled = :scheduled', { scheduled });
+    }
+
+    queryBuilder.skip((page - 1) * limit).take(limit);
+
+    const notifications = await queryBuilder.getMany();
+    
+    return notifications.map(NotificationMapper.toDomain);
+  }
 }
