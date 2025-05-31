@@ -1,5 +1,7 @@
 import { applyDecorators, Type } from '@nestjs/common';
 import { ApiExtraModels, getSchemaPath, ApiResponse as SwaggerApiResponse } from '@nestjs/swagger';
+import { get } from 'http';
+import { PaginationInfo } from 'src/shared/interfaces/api.response.interface';
 
 export const ApiStandardResponse = <TModel extends Type<any>>(
   model: TModel,
@@ -40,28 +42,24 @@ export const ApiStandardResponse = <TModel extends Type<any>>(
 export const ApiPaginatedResponse = <TModel extends Type<any>>(
   model: TModel,
 ) => {
+  const dataSchema = {
+    type: 'array',
+    items: { $ref: getSchemaPath(model)}
+  };
+  const paginationSchema = {
+    $ref: getSchemaPath(PaginationInfo),
+  }
   return applyDecorators(
+    ApiExtraModels(model),
+    ApiExtraModels(PaginationInfo),
     SwaggerApiResponse({
       status: 200,
       description: 'Lista paginada obtenida exitosamente',
       schema: {
         type: 'object',
         properties: {
-          data: {
-            type: 'array',
-            items: { $ref: `#/components/schemas/${model.name}` },
-          },
-          pagination: {
-            type: 'object',
-            properties: {
-              currentPage: { type: 'number' },
-              totalPages: { type: 'number' },
-              totalItems: { type: 'number' },
-              itemsPerPage: { type: 'number' },
-              hasNext: { type: 'boolean' },
-              hasPrevious: { type: 'boolean' },
-            },
-          },
+          data: dataSchema,
+          pagination: paginationSchema,
           meta: {
             type: 'object',
             properties: {

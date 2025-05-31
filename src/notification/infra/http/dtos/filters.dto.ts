@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { NotificationStatus } from "@noti-domain/entities/schemas";
 import { Type } from "class-transformer";
-import { IsOptional } from "class-validator";
+import { IsDateString, IsOptional } from "class-validator";
 
 export class AdvancedFilterDto {
   @ApiProperty({
@@ -24,6 +24,8 @@ export class AdvancedFilterDto {
     type: Date,
   })
   @IsOptional()
+  @IsDateString()
+  @Type(() => Date)
   startCreatedDate?: Date;
 
   @ApiProperty({
@@ -44,13 +46,20 @@ export class AdvancedFilterDto {
   scheduled?: boolean;
 
   @ApiProperty({
-    description: 'Pagination options',
+    description: 'Page number for pagination',
     required: false,
-    type: Object,
+    type: Number,
   })
   @IsOptional()
-  pagination?: {
-    page: number;
-    limit: number;
-  };
+  @Type(() => Number)
+  page?: number;
+  
+  @ApiProperty({
+    description: 'Size of each page for pagination',
+    required: false,
+    type: Number,
+  })
+  @IsOptional()
+  @Type(() => Number)
+  limit?: number; 
 }

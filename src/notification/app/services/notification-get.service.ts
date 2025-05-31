@@ -12,7 +12,7 @@ export class NotificationGetService implements FindNotificationService {
     @Inject(NOTIFICATION_REPOSITORY) private readonly notyRepo: NotificationRepository
   ){}
 
-  listFilters(filter: Partial<Notification>, pagination: Paginate): Promise<Notification[]> {
+  listFilters(filter: Partial<Notification>, pagination: Paginate): Promise<{ data: Notification[], totalRows: number }> {
     return this.notyRepo.listFilters(filter, pagination);
   }
 
