@@ -45,7 +45,7 @@ export class NotificationTypeOrmRepository implements NotificationRepository {
     return notifications.map(NotificationMapper.toDomain);
   }
 
-  async listFilters(filter: Partial<Notification>, pagination: { page: number; limit: number }): Promise<Notification[]> {
+  async listFilters(filter: Partial<Notification>, pagination: { page: number; limit: number }): Promise<{data: Notification[], totalRows: number}> {
     const { target, createdBy, createdAt, status, scheduled } = filter;
     const { page, limit } = pagination;
 
@@ -69,8 +69,11 @@ export class NotificationTypeOrmRepository implements NotificationRepository {
 
     queryBuilder.skip((page - 1) * limit).take(limit);
 
-    const notifications = await queryBuilder.getMany();
-    
-    return notifications.map(NotificationMapper.toDomain);
+    const [ notifications, totalRows ] = await Promise.all([ queryBuilder.getMany(), queryBuilder.getCount() ]);
+
+    return { 
+      data: notifications.map(NotificationMapper.toDomain), 
+      totalRows 
+    };
   }
 }

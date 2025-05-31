@@ -1,12 +1,14 @@
 import { Controller, Get, Query, HttpException, UseInterceptors, UseFilters } from '@nestjs/common';
 import { NotificationGetService } from '@noti-app/services/notification-get.service';
 import { Notification } from '@noti-domain/entities/notification.entity';
-import { ApiStandardResponse } from 'src/shared/infra/decorators/api-response.decorator';
+import { ApiPaginatedResponse, ApiStandardResponse } from 'src/shared/infra/decorators/api-response.decorator';
 import { HttpExceptionFilter } from 'src/shared/infra/filters/http-exception.filter';
 import { ResponseInterceptor } from 'src/shared/infra/interceptors/response.interceptors';
 import { NotificationDto } from '../dtos/notification.dto';
 import { NotificationMapper } from '../mappers/notification.mapper';
 import { AdvancedFilterDto } from '../dtos/filters.dto';
+import { ResponseBuilder } from 'src/shared/infra/builders/response.builder';
+import { PaginatedResponse } from 'src/shared/interfaces/api.response.interface';
 
 @Controller('notifications')
 @UseInterceptors(ResponseInterceptor)
@@ -53,14 +55,16 @@ export class NotificationController {
   }
 
   @Get('filtered')
-  @ApiStandardResponse(NotificationDto, 200, 'Lista de notificationes filtradas', true)
-  async getFilteredList(@Query() filters: AdvancedFilterDto): Promise<NotificationDto[]> {
+  @ApiPaginatedResponse(NotificationDto)
+  async getFilteredList(@Query() filters: AdvancedFilterDto): Promise<PaginatedResponse<NotificationDto>> {
     const {
-      pagination, 
+      page = 1,
+      limit = 10,
       ...dataFilter
-    } = filters;
-    const { page = 1, limit = 10 } = pagination || {};
-    const data: Notification[] = await this.getService.listFilters({
+    } = filters ?? {};
+
+    console.log('filters', filters)
+    const { data, totalRows } = await this.getService.listFilters({
       createdAt: dataFilter.startCreatedDate,
       target: dataFilter.target,
       createdBy: dataFilter.sender,
@@ -68,7 +72,11 @@ export class NotificationController {
       scheduled: dataFilter.scheduled,
     }, {page, limit});
 
-    return data.map(NotificationMapper.toNotificationDto);
-
+    return ResponseBuilder.paginated<NotificationDto>(
+      data.map(NotificationMapper.toNotificationDto), 
+      totalRows, 
+      page, 
+      limit
+    );
   }
 }

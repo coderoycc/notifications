@@ -1,3 +1,5 @@
+import { ApiProperty } from '@nestjs/swagger';
+
 export interface ApiResponse<T = any> {
   data?: T;
   error?: ErrorDetail;
@@ -23,11 +25,22 @@ export interface MetaInfo {
   executionTime?: number;
 }
 
-export interface PaginationInfo {
+export class PaginationInfo {
+  @ApiProperty({ example: 1, description: 'Página actual' })
   currentPage: number;
+
+  @ApiProperty({ example: 10, description: 'Total de páginas' })
   totalPages: number;
+
+  @ApiProperty({ example: 100, description: 'Total de elementos' })
   totalItems: number;
+
+  @ApiProperty({ example: 10, description: 'Elementos por página' })
   itemsPerPage: number;
-  hasNext: boolean;
-  hasPrevious: boolean;
+
+  @ApiProperty({ example: true, required: false, description: '¿Hay página siguiente?' })
+  hasNext?: boolean;
+
+  @ApiProperty({ example: false, required: false, description: '¿Hay página anterior?' })
+  hasPrevious?: boolean;
 }

@@ -7,5 +7,5 @@ export interface NotificationRepository {
   findById(id: string): Promise<Notification | null>;
   findAllByTarget(target: string): Promise<Notification[]>;
   findByUserId(target: string): Promise<Notification[]>;
-  listFilters(filter: Partial<Notification>, pagination: { page: number; limit: number }): Promise<Notification[]>;
+  listFilters(filter: Partial<Notification>, pagination: { page: number; limit: number }): Promise<{ data: Notification[], totalRows: number }>;
 }
