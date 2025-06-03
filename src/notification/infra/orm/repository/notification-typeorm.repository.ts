@@ -51,21 +51,21 @@ export class NotificationTypeOrmRepository implements NotificationRepository {
 
     const queryBuilder = this.notificationRepository.createQueryBuilder('notification');
 
-    if (target) {
+    if (target) 
       queryBuilder.andWhere('notification.target = :target', { target });
-    }
-    if (createdBy) {
+    
+    if (createdBy) 
       queryBuilder.andWhere('notification.createdBy = :sender', { sender: createdBy });
-    }
-    if (createdAt) {
+    
+    if (createdAt) 
       queryBuilder.andWhere('notification.createdAt >= :startCreatedDate', { startCreatedDate: createdAt });
-    }
-    if (status) {
+    
+    if (status) 
       queryBuilder.andWhere('notification.status = :status', { status });
-    }
-    if (scheduled !== undefined) {
+    
+    if (scheduled !== undefined) 
       queryBuilder.andWhere('notification.scheduled = :scheduled', { scheduled });
-    }
+    
 
     queryBuilder.skip((page - 1) * limit).take(limit);
 

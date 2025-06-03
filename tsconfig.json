@@ -29,6 +29,15 @@
       "@noti-app/*": [
         "./src/notification/app/*"
       ],
+      "@shared-infra/*": [
+        "./src/shared/infra/*"
+      ],
+      "@shared-utils/*": [
+        "./src/shared/utils/*"
+      ],
+      "@shared-config/*": [
+        "./src/shared/config/*"
+      ],
     }
   }
 }
