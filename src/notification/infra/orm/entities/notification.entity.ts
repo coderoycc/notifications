@@ -34,4 +34,7 @@ export class NotificationEntity {
 
   @Column({ type: 'varchar', length: 64 })
   createdBy: string;
+
+  @Column({ type: 'varchar', length: 100, nullable: true })
+  timezone?: string;
 }

@@ -11,6 +11,7 @@ export class Notification {
   type?: NotificationType;
   target: string;
   createdBy?: string;
+  timezone?: string;
 
 
   loadFromPersistence(

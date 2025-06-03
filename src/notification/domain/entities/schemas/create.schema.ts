@@ -8,4 +8,5 @@ export interface NewNotificationRequest {
   type: NotificationType;
   target: string;
   createdBy: string;
+  createdAt: Date;
 }

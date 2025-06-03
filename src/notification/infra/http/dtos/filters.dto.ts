@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { NotificationStatus } from "@noti-domain/entities/schemas";
-import { Type } from "class-transformer";
+import { Transform, Type } from "class-transformer";
 import { IsDateString, IsOptional } from "class-validator";
 
 export class AdvancedFilterDto {
@@ -42,7 +42,7 @@ export class AdvancedFilterDto {
     required: false,
   })
   @IsOptional()
-  @Type(() => Boolean)
+  @Transform(({ value }) => value === 'true' || value === true || value === 1 || value === '1')
   scheduled?: boolean;
 
   @ApiProperty({
@@ -62,4 +62,12 @@ export class AdvancedFilterDto {
   @IsOptional()
   @Type(() => Number)
   limit?: number; 
+
+  @ApiProperty({
+    description: 'Timezone for the notification, e.g., "America/Mexico_City". If not provided, defaults to UTC.',
+    example: 'America/Mexico_City',
+    required: false,
+  })
+  @IsOptional()
+  timezone?: string;
 }

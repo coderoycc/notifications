@@ -12,7 +12,6 @@ export const ConfigOptions = async (configService: ConfigService): Promise<TypeO
   entities: [NotificationEntity],
   synchronize: configService.get('DB_SYNC') === 'true',
   logging: ['error', 'warn', 'info', 'query', 'schema'],
-  // logging: configService.get('DB_LOGGING') === 'true',
   ssl: configService.get('DB_SSL') === 'true' ? { rejectUnauthorized: false } : false,
   migrationsRun: false, 
 }) 

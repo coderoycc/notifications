@@ -28,3 +28,10 @@ export function isValidTimezone(timezone: string): boolean {
 export function fromUTC(date: string | Date, timezone: string): Date {
   return moment.utc(date).tz(timezone).toDate();
 }
+
+/**
+ * @returns fecha actual en UTC.
+ */
+export function nowUTC(): Date {
+  return moment.utc().toDate();
+}

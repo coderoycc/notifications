@@ -9,6 +9,7 @@ import { NotificationMapper } from '../mappers/notification.mapper';
 import { AdvancedFilterDto } from '../dtos/filters.dto';
 import { ResponseBuilder } from 'src/shared/infra/builders/response.builder';
 import { PaginatedResponse } from 'src/shared/interfaces/api.response.interface';
+import { isValidTimezone } from '@shared-utils/date-management.util';
 
 @Controller('notifications')
 @UseInterceptors(ResponseInterceptor)
@@ -63,14 +64,20 @@ export class NotificationController {
       ...dataFilter
     } = filters ?? {};
 
-    console.log('filters', filters)
+    if (dataFilter.timezone && !isValidTimezone(dataFilter.timezone))
+      throw new HttpException(
+        { success: false, message: 'Invalid timezone format' },
+        400,
+      );
+
     const { data, totalRows } = await this.getService.listFilters({
       createdAt: dataFilter.startCreatedDate,
       target: dataFilter.target,
       createdBy: dataFilter.sender,
       status: dataFilter.status,
-      scheduled: dataFilter.scheduled,
-    }, {page, limit});
+      scheduled: !!dataFilter.scheduled,
+      timezone: dataFilter.timezone || 'UTC',
+    }, { page, limit });
 
     return ResponseBuilder.paginated<NotificationDto>(
       data.map(NotificationMapper.toNotificationDto), 
