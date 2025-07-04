@@ -1,5 +1,5 @@
-import { Notification } from "@noti-domain/entities/notification.entity";
-import { NotificationType } from "../../domain/entities/schemas";
+import { Notification } from '@noti-domain/entities/notification.entity';
+import { NotificationType } from '../../domain/entities/schemas';
 
 export interface Paginate {
   page: number;
@@ -9,5 +9,8 @@ export interface FindNotificationService {
   findAllByUserId(userId: string): Promise<Notification[]>;
   findAllByType(type: NotificationType): Promise<Notification[]>;
   findAllByTarget(target: string): Promise<Notification[]>;
-  listFilters(filter: Partial<Notification>, pagination: Paginate): Promise<{ data: Notification[], totalRows: number }>;
+  listFilters(
+    filter: Partial<Notification>,
+    pagination: Paginate,
+  ): Promise<{ data: Notification[]; totalRows: number }>;
 }
