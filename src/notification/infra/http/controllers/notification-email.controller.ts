@@ -1,5 +1,14 @@
-import { Controller, Post, Body, HttpException, HttpStatus, Get, Query, UseInterceptors, UseFilters } from '@nestjs/common';
-import { CreateNotificationDto } from '../dtos/create-notification.dto';
+import {
+  Controller,
+  Post,
+  Body,
+  HttpException,
+  HttpStatus,
+  Get,
+  Query,
+  UseInterceptors,
+  UseFilters,
+} from '@nestjs/common';
 import { NotificationEmailMapper } from '../mappers/notification-email.mapper';
 import { CreateNotificationUseCaseImpl } from '@noti-app/use-cases/create-notification.use-case';
 import moment from 'moment';
@@ -9,7 +18,6 @@ import { CreateNotificationEmailDto } from '../dtos/create-email-notification.dt
 import { ApiStandardResponse } from 'src/shared/infra/decorators/api-response.decorator';
 import { NotificationMapper } from '../mappers/notification.mapper';
 import { NotificationDto } from '../dtos/notification.dto';
-import { ApiBadRequestResponse } from '@nestjs/swagger';
 import { apiErrorHandler } from 'src/shared/infra/handlers/api-error.handler';
 import { isValidTimezone } from 'src/shared/utils/date-management.util';
 
@@ -17,17 +25,27 @@ import { isValidTimezone } from 'src/shared/utils/date-management.util';
 @UseInterceptors(ResponseInterceptor)
 @UseFilters(HttpExceptionFilter)
 export class NotificationEmailCreateController {
-  constructor(private readonly notificationCreateService: CreateNotificationUseCaseImpl) {}
+  constructor(
+    private readonly notificationCreateService: CreateNotificationUseCaseImpl,
+  ) {}
 
   @Post('send-email')
   @ApiStandardResponse(NotificationDto, 201, 'Save notification email')
-  async createNotification(@Body() createNotificationDto: CreateNotificationEmailDto): Promise<NotificationDto> {
+  async createNotification(
+    @Body() createNotificationDto: CreateNotificationEmailDto,
+  ): Promise<NotificationDto> {
     try {
-      if(createNotificationDto.timezone && !isValidTimezone(createNotificationDto.timezone))
+      if (
+        createNotificationDto.timezone &&
+        !isValidTimezone(createNotificationDto.timezone)
+      )
         throw new HttpException('Invalid timezone', HttpStatus.BAD_REQUEST);
-      
-      const dataToCreate = NotificationEmailMapper.toCreateRequest(createNotificationDto);
-      const notiResp = await this.notificationCreateService.execute(dataToCreate);
+
+      const dataToCreate = NotificationEmailMapper.toCreateRequest(
+        createNotificationDto,
+      );
+      const notiResp =
+        await this.notificationCreateService.execute(dataToCreate);
       return NotificationMapper.toNotificationDto(notiResp);
     } catch (error) {
       throw apiErrorHandler(error);
@@ -36,27 +54,44 @@ export class NotificationEmailCreateController {
 
   @Post('schedule-email')
   @ApiStandardResponse(NotificationDto, 201, 'Schedule notification email')
-  async scheduleNotification(@Body() createNotificationDto: CreateNotificationEmailDto): Promise<NotificationDto> {
+  async scheduleNotification(
+    @Body() createNotificationDto: CreateNotificationEmailDto,
+  ): Promise<NotificationDto> {
     try {
       if (
-        !moment(createNotificationDto.scheduledAt, 'YYYY-MM-DD HH:mm:ss', true).isValid()
-        || moment(createNotificationDto.scheduledAt).isBefore(moment.now())
-      ) 
-        throw new HttpException('Scheduled date is not valid', HttpStatus.BAD_REQUEST);
-      
-      if(!createNotificationDto.scheduledAt) 
-        throw new HttpException('Scheduled date is required', HttpStatus.BAD_REQUEST);
+        !moment(
+          createNotificationDto.scheduledAt,
+          'YYYY-MM-DD HH:mm:ss',
+          true,
+        ).isValid() ||
+        moment(createNotificationDto.scheduledAt).isBefore(moment.now())
+      )
+        throw new HttpException(
+          'Scheduled date is not valid',
+          HttpStatus.BAD_REQUEST,
+        );
 
-      if(createNotificationDto.timezone && !isValidTimezone(createNotificationDto.timezone))
+      if (!createNotificationDto.scheduledAt)
+        throw new HttpException(
+          'Scheduled date is required',
+          HttpStatus.BAD_REQUEST,
+        );
+
+      if (
+        createNotificationDto.timezone &&
+        !isValidTimezone(createNotificationDto.timezone)
+      )
         throw new HttpException('Invalid timezone', HttpStatus.BAD_REQUEST);
 
       const dataToCreate = NotificationEmailMapper.toCreateRequestWithSchedule(
-        createNotificationDto as Required<CreateNotificationEmailDto>
+        createNotificationDto as Required<CreateNotificationEmailDto>,
       );
-      const notiResp = await this.notificationCreateService.execute(dataToCreate);
+      const notiResp =
+        await this.notificationCreateService.execute(dataToCreate);
       return NotificationMapper.toNotificationDto(notiResp);
     } catch (error) {
       throw apiErrorHandler(error);
-    } 
+    }
   }
 }
+

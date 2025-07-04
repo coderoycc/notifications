@@ -7,16 +7,20 @@ import { Notification } from '@noti-domain/entities/notification.entity';
 import { SenderQuotaExceededException } from '@noti-domain/exceptions/notification.exceptions';
 
 @Injectable()
-export class CreateNotificationUseCaseImpl implements CreateNotificationUseCase {
+export class CreateNotificationUseCaseImpl
+  implements CreateNotificationUseCase
+{
   constructor(
-    @Inject(NOTIFICATION_REPOSITORY) private readonly notificationRepository: NotificationRepository
+    @Inject(NOTIFICATION_REPOSITORY)
+    private readonly notificationRepository: NotificationRepository,
   ) {}
 
   async execute(request: NewNotificationRequest): Promise<Notification> {
-    if (request.createdBy && request.createdBy === 'fdcsasdfasdfasdf') {
+    if (!request.createdBy)
       throw new SenderQuotaExceededException(request.createdBy, 200);
-    }
+
     const notificationData = await this.notificationRepository.create(request);
-    return notificationData; 
+    return notificationData;
   }
 }
+
