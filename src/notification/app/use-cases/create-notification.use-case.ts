@@ -23,4 +23,3 @@ export class CreateNotificationUseCaseImpl
     return notificationData;
   }
 }
-
