@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config'; // Para obtener configuración
-// import * as nodemailer from 'nodemailer'; // O tu librería de email preferida
+import * as nodemailer from 'nodemailer'; // O tu librería de email preferida
 
 import { Notification } from '@noti-domain/entities/notification.entity';
 import { SendResponse } from '@noti-domain/entities/schemas';
@@ -24,16 +24,14 @@ export class EmailSenderAdapter implements NotificationSender {
   }
 
   async send(notification: Notification): Promise<SendResponse> {
-    if (notification.type !== 'email') {
-    }
-
     try {
-      const info = await this.transporter.sendMail({
+      const info = this.transporter.sendMail({
         from: this.configService.get<string>('EMAIL_FROM'),
         to: notification.createdAt,
         subject: notification.createdAt,
         html: notification.message,
       });
+      console.log(info);
     } catch (error) {
       throw error;
     }
