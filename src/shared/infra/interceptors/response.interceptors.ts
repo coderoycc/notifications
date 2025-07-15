@@ -13,13 +13,13 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, any> {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const request = context.switchToHttp().getRequest();
     const response = context.switchToHttp().getResponse();
-    
+
     request.startTime = Date.now();
 
     return next.handle().pipe(
       map((data) => {
         const statusCode = response.statusCode;
-        
+
         // si tiene el formato
         if (data && (data.meta || data.error)) {
           return data;
@@ -39,3 +39,4 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, any> {
     );
   }
 }
+
