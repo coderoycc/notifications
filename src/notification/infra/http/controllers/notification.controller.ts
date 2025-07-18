@@ -1,6 +1,5 @@
 import { Controller, Get, Query, HttpException, UseInterceptors, UseFilters } from '@nestjs/common';
 import { NotificationGetService } from '@noti-app/services/notification-get.service';
-import { Notification } from '@noti-domain/entities/notification.entity';
 import { ApiPaginatedResponse, ApiStandardResponse } from 'src/shared/infra/decorators/api-response.decorator';
 import { HttpExceptionFilter } from 'src/shared/infra/filters/http-exception.filter';
 import { ResponseInterceptor } from 'src/shared/infra/interceptors/response.interceptors';

@@ -7,7 +7,6 @@ export interface Paginate {
 }
 export interface FindNotificationService {
   findAllByUserId(userId: string): Promise<Notification[]>;
-  findAllByType(type: NotificationType): Promise<Notification[]>;
   findAllByTarget(target: string): Promise<Notification[]>;
   listFilters(
     filter: Partial<Notification>,
