@@ -3,7 +3,6 @@ import { LoadTenantDataPort } from 'src/tenant/domain/outbound-ports/load-tenant
 import * as fs from 'fs/promises';
 import * as path from 'path';
 import { Tenant } from 'src/tenant/domain/entities/tenant';
-
 @Injectable()
 export class GetTenantFromFileAdapter implements LoadTenantDataPort {
   private readonly filePath = path.join(

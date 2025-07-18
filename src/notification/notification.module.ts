@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { NotificationGetService } from '@noti-app/services/notification-get.service';
 import { CreateNotificationUseCaseImpl } from '@noti-app/use-cases/create-notification.use-case';
 import { NotificationEmailCreateController } from '@noti-infra/http/controllers/notification-email.controller';
 import { NotificationController } from '@noti-infra/http/controllers/notification.controller';
@@ -18,6 +19,7 @@ import { TenantModule } from 'src/tenant/tenant.module';
       useClass: NotificationTypeOrmRepository,
     },
     CreateNotificationUseCaseImpl,
+    NotificationGetService,
   ],
   controllers: [NotificationController, NotificationEmailCreateController],
   exports: [],
