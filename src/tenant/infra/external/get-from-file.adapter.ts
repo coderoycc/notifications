@@ -33,3 +33,5 @@ export class GetTenantFromFileAdapter implements LoadTenantDataPort {
     }
   }
 }
+
+export const LoadDataFileTK = Symbol('LoadDataFileTK');

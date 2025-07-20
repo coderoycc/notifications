@@ -20,6 +20,7 @@ import { NotificationMapper } from '../mappers/notification.mapper';
 import { NotificationDto } from '../dtos/notification.dto';
 import { apiErrorHandler } from 'src/shared/infra/handlers/api-error.handler';
 import { isValidTimezone } from 'src/shared/utils/date-management.util';
+import { SendEmailNotificationUseCase } from '@noti-app/use-cases/send-email-notification.use-case';
 
 @Controller('notifications')
 @UseInterceptors(ResponseInterceptor)
@@ -27,6 +28,7 @@ import { isValidTimezone } from 'src/shared/utils/date-management.util';
 export class NotificationEmailCreateController {
   constructor(
     private readonly notificationCreateService: CreateNotificationUseCaseImpl,
+    private readonly notificationSender: SendEmailNotificationUseCase,
   ) {}
 
   @Post('send-email')
@@ -46,6 +48,9 @@ export class NotificationEmailCreateController {
       );
       const notiResp =
         await this.notificationCreateService.execute(dataToCreate);
+      
+      const senResp = await this.notificationSender.execute(notiResp);
+       
       return NotificationMapper.toNotificationDto(notiResp);
     } catch (error) {
       throw apiErrorHandler(error);
