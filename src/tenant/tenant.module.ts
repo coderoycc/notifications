@@ -1,16 +1,15 @@
 import { Module } from '@nestjs/common';
 import { GetTenantFromFileUseCase } from './app/use-cases/get-from-file.use-case';
-import { GetTenantFromFileAdapter } from './infra/external/get-from-file.adapter';
-import { LoadTenantDataPort } from './domain/outbound-ports/load-tenant-data';
+import { GetTenantFromFileAdapter, LoadDataFileTK } from './infra/external/get-from-file.adapter';
 
 @Module({
   providers: [
     {
-      provide: 'TenantFromFile' ,
+      provide: LoadDataFileTK,
       useClass: GetTenantFromFileAdapter,
     },
     GetTenantFromFileUseCase,
   ],
-  exports: ['TenantFromFile'],
+  exports: [LoadDataFileTK],
 })
 export class TenantModule {}
