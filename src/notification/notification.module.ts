@@ -10,6 +10,7 @@ import {
   NotificationTypeOrmRepository,
   NOTIFICATION_REPOSITORY,
 } from '@noti-infra/orm/repository/notification-typeorm.repository';
+import { EmailSenderAdapter, TKEmailSender } from '@noti-infra/senders/email-sender.adapter';
 import { TenantModule } from 'src/tenant/tenant.module';
 
 @Module({
@@ -21,6 +22,10 @@ import { TenantModule } from 'src/tenant/tenant.module';
     },
     CreateNotificationUseCaseImpl,
     NotificationGetService,
+    {
+      provide: TKEmailSender,
+      useClass: EmailSenderAdapter,
+    },
     SendEmailNotificationUseCase,
   ],
   controllers: [NotificationController, NotificationEmailCreateController],
