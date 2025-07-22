@@ -14,13 +14,40 @@ export class EmailSenderAdapter implements NotificationSender {
     @Inject(LoadDataFileTK)
     private readonly getTenant: LoadTenantDataPort,
   ) { }
+  private transporter:  nodemailer.Transporter;
 
+  private async initializeTransporter(tenantId: string): Promise<void> {
+    const tenant = await this.getTenant.load(tenantId);
+    if (tenant === null) throw new Error('Tenant not found');
+
+    this.transporter = nodemailer.createTransport({
+      host: 'host.example.com',
+      port: 465,
+      secure: true,
+      auth: {
+        user: tenant.email,
+        pass: tenant.pass,
+      },
+    });
+  }
   async send(notification: Notification): Promise<SendResponse> {
     try {
-      const tenant = await this.getTenant.load('tenant123');
-      if (tenant === null) throw new Error('Tenant not found');
-      console.log(tenant, 'Tentant details')
-      return {} as SendResponse;
+      await this.initializeTransporter('default');
+      const mailOptions = {
+        from: `NITIFICATION <${notification.createdBy}>`,
+        to: notification.target,
+        subject: notification.title,
+        text: notification.message,
+        html: `<p>${notification.message}</p>`,
+      };
+      await this.transporter.sendMail(mailOptions);
+
+      const sendResponse: SendResponse = {
+        success: true,
+        message: `Email sent successfully to ${notification.target}`,
+        notificationId: notification.id,
+      }
+      return sendResponse;
     } catch (error) {
       throw error;
     }
