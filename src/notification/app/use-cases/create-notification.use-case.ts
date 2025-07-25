@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { NotificationRepository } from '@noti-domain/outbound-ports/notification.repository';
+import { NotificationRepository } from '@noti-domain/ports/out/notification.repository';
 import { NewNotificationRequest } from '@noti-domain/entities/schemas/create.schema';
-import { CreateNotificationUseCase } from '@noti-domain/inbound-ports/create-notification.use-case';
+import { CreateNotificationUseCase } from '@noti-domain/ports/in/create-notification.use-case';
 import { NOTIFICATION_REPOSITORY } from '@noti-infra/orm/repository/notification-typeorm.repository';
 import { Notification } from '@noti-domain/entities/notification.entity';
 import { SenderQuotaExceededException } from '@noti-domain/exceptions/notification.exceptions';

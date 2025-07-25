@@ -1,4 +1,4 @@
-import { NotificationRepository } from "@noti-domain/outbound-ports/notification.repository";
+import { NotificationRepository } from "@noti-domain/ports/out/notification.repository";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { NotificationEntity } from "../entities/notification.entity";

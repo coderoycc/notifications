@@ -1,4 +1,4 @@
-import { NotificationType } from "./notification-props.schema";
+import { NotificationType } from "./notification-props.dto";
 
 export interface NewNotificationRequest {
   title: string;
