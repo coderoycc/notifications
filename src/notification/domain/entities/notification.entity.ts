@@ -1,4 +1,4 @@
-import { NotificationProps, NotificationStatus, NotificationType } from "./schemas";
+import { NotificationProps, NotificationStatus, NotificationType } from "../dtos";
 
 export class Notification {
   id?: string;
@@ -16,7 +16,7 @@ export class Notification {
 
   loadFromPersistence(
     data: NotificationProps
-  ){
+  ) {
     this.id = data.id;
     this.title = data.title;
     this.message = data.message;
