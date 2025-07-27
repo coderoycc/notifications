@@ -1,6 +1,6 @@
 import { NotificationType } from "./notification-props.dto";
 
-export interface NewNotificationRequest {
+export interface NewNotificationCommand {
   title: string;
   message: string;
   scheduled: boolean;

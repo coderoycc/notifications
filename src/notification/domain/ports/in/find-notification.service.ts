@@ -1,5 +1,4 @@
 import { Notification } from '@noti-domain/entities/notification.entity';
-import { NotificationType } from '../../domain/entities/schemas';
 
 export interface Paginate {
   page: number;
