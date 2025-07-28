@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { NotificationStatus } from "@noti-domain/entities/schemas";
+import { NotificationStatus } from "@noti-domain/dtos";
 import { Transform, Type } from "class-transformer";
 import { IsDateString, IsOptional } from "class-validator";
 
