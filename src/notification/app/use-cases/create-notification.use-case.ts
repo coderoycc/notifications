@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { NotificationRepository } from '@noti-domain/ports/out/notification.repository';
-import { NewNotificationRequest } from '@noti-domain/entities/schemas/create.schema';
+import { NewNotificationCommand } from '@noti-domain/dtos';
 import { CreateNotificationUseCase } from '@noti-domain/ports/in/create-notification.use-case';
 import { NOTIFICATION_REPOSITORY } from '@noti-infra/orm/repository/notification-typeorm.repository';
 import { Notification } from '@noti-domain/entities/notification.entity';
@@ -15,7 +15,7 @@ export class CreateNotificationUseCaseImpl
     private readonly notificationRepository: NotificationRepository,
   ) {}
 
-  async execute(request: NewNotificationRequest): Promise<Notification> {
+  async execute(request: NewNotificationCommand): Promise<Notification> {
     if (!request.createdBy)
       throw new SenderQuotaExceededException(request.createdBy, 200);
 
