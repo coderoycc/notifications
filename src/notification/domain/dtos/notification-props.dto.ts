@@ -1,15 +1,4 @@
-export enum NotificationStatus {
-  PENDING = 'pending', 
-  SCHEDULED = 'scheduled', 
-  SENT = 'sent',
-  FAILED = 'failed',
-}
-export enum NotificationType {
-  EMAIL = 'email',
-  SMS = 'sms',
-  PUSH = 'push',
-} 
-
+import { NotificationStatus, NotificationType } from '../entities/notification.enums';
 export type NotificationProps = {
   id: string;
   title: string;
