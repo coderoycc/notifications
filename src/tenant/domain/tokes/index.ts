@@ -1,0 +1,1 @@
+export const LOAD_TENANT_DATA_TK = Symbol('LoadTenant');
