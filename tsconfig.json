@@ -38,6 +38,15 @@
       "@shared-config/*": [
         "./src/shared/config/*"
       ],
+      "@tenant-domain/*": [
+        "./src/tenant/domain/*"
+      ],
+      "@tenant-infra/*": [
+        "./src/tenant/infra/*"
+      ],
+      "@tenant-app/*": [
+        "./src/tenant/app/*"
+      ]
     }
   }
 }

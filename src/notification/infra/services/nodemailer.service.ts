@@ -2,8 +2,8 @@ import { Notification } from '@noti-domain/entities/notification.entity';
 import { EmailService } from '@noti-domain/ports/out/senders.services';
 import * as nodemailer from 'nodemailer';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
-import { GetTenantFromFileUseCase } from 'src/tenant/app/use-cases/get-from-file.use-case';
-import { Tenant } from 'src/tenant/domain/entities/tenant';
+import { GetTenantFromFileUseCase } from '@tenant-app/use-cases/get-from-file.use-case';
+import { Tenant } from '@tenant-domain/entities/tenant';
 
 export class NodemailerEmailService implements EmailService {
   private transporter: nodemailer.Transporter;
