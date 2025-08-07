@@ -10,7 +10,9 @@ import {
   NotificationTypeOrmRepository,
   NOTIFICATION_REPOSITORY,
 } from '@noti-infra/orm/repository/notification-typeorm.repository';
-import { EmailSenderAdapter, TKEmailSender } from '@noti-infra/senders/email-sender.adapter';
+import { EmailSenderAdapter } from '@noti-infra/senders/email-sender.adapter';
+import { EMAIL_SENDER_TK, EMAIL_SERVICE_TK } from '@noti-infra/senders/tokens.senders';
+import { NodemailerEmailService } from '@noti-infra/services/nodemailer.service';
 import { TenantModule } from 'src/tenant/tenant.module';
 
 @Module({
@@ -23,8 +25,12 @@ import { TenantModule } from 'src/tenant/tenant.module';
     CreateNotificationUseCaseImpl,
     NotificationGetService,
     {
-      provide: TKEmailSender,
+      provide: EMAIL_SENDER_TK,
       useClass: EmailSenderAdapter,
+    },
+    {
+      provide: EMAIL_SERVICE_TK,
+      useClass: NodemailerEmailService,
     },
     SendEmailNotificationUseCase,
   ],
