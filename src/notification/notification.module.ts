@@ -12,7 +12,8 @@ import {
 } from '@noti-infra/orm/repository/notification-typeorm.repository';
 import { EmailSenderAdapter } from '@noti-infra/senders/email-sender.adapter';
 import { EMAIL_SENDER_TK, EMAIL_SERVICE_TK } from '@noti-infra/senders/tokens.senders';
-import { NodemailerEmailService } from '@noti-infra/services/nodemailer.service';
+import { MailjetService } from '@noti-infra/services/mailjet.service';
+// import { NodemailerEmailService } from '@noti-infra/services/nodemailer.service';
 import { TenantModule } from 'src/tenant/tenant.module';
 
 @Module({
@@ -30,7 +31,8 @@ import { TenantModule } from 'src/tenant/tenant.module';
     },
     {
       provide: EMAIL_SERVICE_TK,
-      useClass: NodemailerEmailService,
+      // useClass: NodemailerEmailService,
+      useClass: MailjetService,
     },
     SendEmailNotificationUseCase,
   ],
