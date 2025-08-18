@@ -1,4 +1,7 @@
-import { NotificationStatus, NotificationType } from '../entities/notification.enums';
+import {
+  NotificationStatus,
+  NotificationType,
+} from '../entities/notification.enums';
 export type NotificationProps = {
   id: string;
   title: string;
@@ -10,4 +13,5 @@ export type NotificationProps = {
   type: NotificationType;
   target: string;
   createdBy?: string;
-}
+};
+

@@ -1,9 +1,12 @@
-import { NewNotificationCommand, NotificationType } from '@noti-domain/dtos';
+import { NewNotificationCommand } from '@noti-domain/dtos';
 import { CreateNotificationEmailDto } from '../dtos/create-email-notification.dto';
 import { nowUTC, toUTC } from 'src/shared/utils/date-management.util';
+import { NotificationType } from '@noti-domain/entities/notification.enums';
 
 export class NotificationEmailMapper {
-  static toCreateRequest(dto: CreateNotificationEmailDto): NewNotificationCommand {
+  static toCreateRequest(
+    dto: CreateNotificationEmailDto,
+  ): NewNotificationCommand {
     const createdAt = nowUTC();
     return {
       title: dto.title,
@@ -15,7 +18,9 @@ export class NotificationEmailMapper {
       createdAt,
     };
   }
-  static toCreateRequestWithSchedule(dto: Required<CreateNotificationEmailDto>): NewNotificationCommand {
+  static toCreateRequestWithSchedule(
+    dto: Required<CreateNotificationEmailDto>,
+  ): NewNotificationCommand {
     const scheduledAt = toUTC(dto.scheduledAt, dto.timezone || 'UTC');
     const createdAt = nowUTC();
     return {
@@ -27,6 +32,7 @@ export class NotificationEmailMapper {
       target: dto.target,
       scheduledAt,
       createdAt,
-    }
+    };
   }
 }
+

@@ -1,7 +1,7 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { NotificationStatus } from "@noti-domain/dtos";
-import { Transform, Type } from "class-transformer";
-import { IsDateString, IsOptional } from "class-validator";
+import { ApiProperty } from '@nestjs/swagger';
+import { NotificationStatus } from '@noti-domain/entities/notification.enums';
+import { Transform, Type } from 'class-transformer';
+import { IsDateString, IsOptional } from 'class-validator';
 
 export class AdvancedFilterDto {
   @ApiProperty({
@@ -42,7 +42,10 @@ export class AdvancedFilterDto {
     required: false,
   })
   @IsOptional()
-  @Transform(({ value }) => value === 'true' || value === true || value === 1 || value === '1')
+  @Transform(
+    ({ value }) =>
+      value === 'true' || value === true || value === 1 || value === '1',
+  )
   scheduled?: boolean;
 
   @ApiProperty({
@@ -53,7 +56,7 @@ export class AdvancedFilterDto {
   @IsOptional()
   @Type(() => Number)
   page?: number;
-  
+
   @ApiProperty({
     description: 'Size of each page for pagination',
     required: false,
@@ -61,13 +64,15 @@ export class AdvancedFilterDto {
   })
   @IsOptional()
   @Type(() => Number)
-  limit?: number; 
+  limit?: number;
 
   @ApiProperty({
-    description: 'Timezone for the notification, e.g., "America/Mexico_City". If not provided, defaults to UTC.',
+    description:
+      'Timezone for the notification, e.g., "America/Mexico_City". If not provided, defaults to UTC.',
     example: 'America/Mexico_City',
     required: false,
   })
   @IsOptional()
   timezone?: string;
 }
+

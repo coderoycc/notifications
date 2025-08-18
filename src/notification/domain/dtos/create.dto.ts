@@ -1,4 +1,4 @@
-import { NotificationType } from "./notification-props.dto";
+import { NotificationType } from '../entities/notification.enums';
 
 export interface NewNotificationCommand {
   title: string;
@@ -10,3 +10,4 @@ export interface NewNotificationCommand {
   createdBy: string;
   createdAt: Date;
 }
+

@@ -1,4 +1,5 @@
-import { NotificationProps, NotificationStatus, NotificationType } from "../dtos";
+import { NotificationProps } from '../dtos';
+import { NotificationStatus, NotificationType } from './notification.enums';
 
 export class Notification {
   id?: string;
@@ -13,10 +14,7 @@ export class Notification {
   createdBy?: string;
   timezone?: string;
 
-
-  loadFromPersistence(
-    data: NotificationProps
-  ) {
+  loadFromPersistence(data: NotificationProps) {
     this.id = data.id;
     this.title = data.title;
     this.message = data.message;
@@ -28,7 +26,6 @@ export class Notification {
     this.target = data.target;
     this.createdBy = data.createdBy;
   }
-
 
   toRaw(): {
     id?: string;
@@ -52,7 +49,7 @@ export class Notification {
       status: this.status,
       type: this.type,
       target: this.target,
-      createdBy: this.createdBy
+      createdBy: this.createdBy,
     };
   }
 }

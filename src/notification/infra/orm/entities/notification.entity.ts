@@ -1,5 +1,14 @@
-import { NotificationType, NotificationStatus } from "@noti-domain/dtos";
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, Index } from "typeorm";
+import {
+  NotificationType,
+  NotificationStatus,
+} from '@noti-domain/entities/notification.enums';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  Index,
+} from 'typeorm';
 
 @Entity('notifications')
 export class NotificationEntity {
@@ -21,7 +30,11 @@ export class NotificationEntity {
   @Column({ type: 'timestamp', nullable: true })
   scheduledAt: Date;
 
-  @Column({ type: 'enum', enum: NotificationStatus, default: NotificationStatus.PENDING })
+  @Column({
+    type: 'enum',
+    enum: NotificationStatus,
+    default: NotificationStatus.PENDING,
+  })
   status: NotificationStatus;
 
   @Column({ type: 'enum', enum: NotificationType, nullable: true })
@@ -37,3 +50,4 @@ export class NotificationEntity {
   @Column({ type: 'varchar', length: 100, nullable: true })
   timezone?: string;
 }
+
