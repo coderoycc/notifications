@@ -1,6 +1,5 @@
 import { Inject } from '@nestjs/common';
 import { Notification } from '@noti-domain/entities/notification.entity';
-import { NotificationLogger } from '@noti-domain/ports/out/notification.logger';
 import { NotificationSender } from '@noti-domain/ports/out/notification.sender';
 import { EMAIL_SENDER_TK } from '@noti-infra/senders/tokens.senders';
 
