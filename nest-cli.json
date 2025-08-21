@@ -5,9 +5,7 @@
   "compilerOptions": {
     "deleteOutDir": true,
     "assets": [
-      {
-        "include": "tenant/config/files/**/*.json"
-      }
+      { }
     ]
   }
 }

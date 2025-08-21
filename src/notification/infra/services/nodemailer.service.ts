@@ -2,32 +2,32 @@ import { Notification } from '@noti-domain/entities/notification.entity';
 import { EmailService } from '@noti-domain/ports/out/senders.services';
 import * as nodemailer from 'nodemailer';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
-import { GetTenantFromFileUseCase } from '@tenant-app/use-cases/get-from-file.use-case';
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class NodemailerEmailService implements EmailService {
   private transporter: nodemailer.Transporter;
 
-  constructor(private readonly tenantUc: GetTenantFromFileUseCase){ }
+  constructor(private readonly configService: ConfigService){ }
 
-  async loadMailerInstance(tenantId: string): Promise<void>  {
-    const dataTenant = await this.tenantUc.execute(tenantId);
-    if(!dataTenant) {
-      throw new Error('Tenant not found');
-    }
+  async loadMailerInstance(): Promise<void>  {
+    const host = this.configService.get('MAIL_HOST');
+    const username = this.configService.get('MAIL_USER');
+    const password = this.configService.get('MAIL_PASS');
     this.transporter = nodemailer.createTransport({
-      host: 'smtp.example.com',
+      host: host,
       port: 587,
-      secure: false, // true for 465, false for other ports
+      secure: false,
       auth: {
-        user: dataTenant.name,
-        pass: dataTenant.pass,
+        user: username,
+        pass: password,
       },
     } as SMTPTransport.Options);
   }
 
   async sendEmail(noti: Notification): Promise<void> {
+    await this.loadMailerInstance();
     await this.transporter.sendMail({
       from: process.env.FROM_EMAIL,
       to: noti.target,
