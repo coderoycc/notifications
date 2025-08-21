@@ -1,7 +1,7 @@
 import { Notification } from "@noti-domain/entities/notification.entity";
 
 export interface EmailService {
-  sendEmail(notification: Notification, tenantId: string): Promise<void>;
+  sendEmail(notification: Notification): Promise<void>;
 }
 
 export interface SmsService {
