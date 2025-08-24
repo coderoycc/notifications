@@ -6,15 +6,19 @@ import { NotificationEmailCreateController } from '@noti-infra/http/controllers/
 import { NotificationController } from '@noti-infra/http/controllers/notification.controller';
 import {
   NotificationTypeOrmRepository,
-  NOTIFICATION_REPOSITORY,
 } from '@noti-infra/orm/repository/notification-typeorm.repository';
 import { EmailSenderAdapter } from '@noti-infra/senders/email-sender.adapter';
 import { EMAIL_SENDER_TK, EMAIL_SERVICE_TK } from '@noti-infra/senders/tokens.senders';
 import { MailjetService } from '@noti-infra/services/mailjet.service';
+import { NOTIFICATION_REPOSITORY } from "@noti-domain/tokens";
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { NotificationEntity } from '@noti-infra/orm/entities/notification.entity';
 // import { NodemailerEmailService } from '@noti-infra/services/nodemailer.service';
 
 @Module({
-  imports: [],
+  imports: [
+    TypeOrmModule.forFeature([NotificationEntity])
+  ],
   providers: [
     {
       provide: NOTIFICATION_REPOSITORY,
