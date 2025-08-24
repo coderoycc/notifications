@@ -5,7 +5,6 @@ import { NotificationEntity } from "../entities/notification.entity";
 import { Notification } from "@noti-domain/entities/notification.entity";
 import { NotificationMapper } from "../mappers/notification-orm.mapper";
 
-export const NOTIFICATION_REPOSITORY = Symbol('NotificationRepositoryTypeOrm');
 
 export class NotificationTypeOrmRepository implements NotificationRepository {
   constructor(
