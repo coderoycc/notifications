@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 
 import { Notification } from '@noti-domain/entities/notification.entity';
 import { SendResponse } from '@noti-domain/dtos';
@@ -12,7 +12,12 @@ export class EmailSenderAdapter implements NotificationSender {
   constructor(@Inject(EMAIL_SERVICE_TK) private readonly emailService: EmailService) { }
 
   async send(notification: Notification): Promise<SendResponse> {
-    await this.emailService.sendEmail(notification);
-    return { success: true };
+    try {
+      await this.emailService.sendEmail(notification);
+      return { success: true };
+    } catch (error) {
+      Logger.error(error, EmailSenderAdapter.name);
+    }
+    return { success: false };
   }
 }

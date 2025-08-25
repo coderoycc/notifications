@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Notification } from '@noti-domain/entities/notification.entity';
 import { EmailService } from '@noti-domain/ports/out/senders.services';
@@ -39,12 +39,11 @@ export class MailjetService implements EmailService {
             },
           ],
         });
-      console.log(request.response, request.body);
-      if (request.response.status === 200) {
-        console.log('Email sent successfully');
-      }
+      console.log(request.response, request.body, request.response.data);
+      if (request.response.status === 200) 
+        Logger.log('Email sent successfully', MailjetService.name);
     } catch (error) {
-      console.error('Error sending email:', error);
+      Logger.error(error, MailjetService.name);
       throw error;
     }
   }
