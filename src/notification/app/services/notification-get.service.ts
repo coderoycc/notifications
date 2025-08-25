@@ -1,7 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { Notification } from "@noti-domain/entities/notification.entity";
-import { FindNotificationService, Paginate } from "@noti-domain/ports/in/find-notification.service";
-import { NotificationRepository } from "@noti-domain/ports/out/notification.repository";
+import { FindNotificationService, Paginate, NotificationRepository } from "@noti-domain/ports";
 import { NOTIFICATION_REPOSITORY } from "@noti-domain/tokens";
 
 @Injectable()

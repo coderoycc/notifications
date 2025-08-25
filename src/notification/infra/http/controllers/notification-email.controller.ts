@@ -8,6 +8,7 @@ import {
   Query,
   UseInterceptors,
   UseFilters,
+  Logger,
 } from '@nestjs/common';
 import { NotificationEmailMapper } from '../mappers/notification-email.mapper';
 import { CreateNotificationUseCaseImpl } from '@noti-app/use-cases/create-notification.use-case';
@@ -50,6 +51,7 @@ export class NotificationEmailCreateController {
         await this.notificationCreateService.execute(dataToCreate);
       
       const senResp = await this.notificationSender.execute(notiResp);
+      Logger.log('Notification sent', senResp);
        
       return NotificationMapper.toNotificationDto(notiResp);
     } catch (error) {
